@@ -14,7 +14,7 @@ We use it to display temperature and humidity values, as well as the time and up
 
 The version in the bottom right corner is essentially the date and time, to determine if an update was successful.
 
-The drop changes its appearance depending on the ammount of rain on the current day. First it is empty (`< 5 l``), then filled black (`< 15 l`), then the flood picture appears.
+The drop changes its appearance depending on the ammount of rain on the current day. First it is empty (`< 5 l/d`), then filled black (`< 15 l/d`), then the flood picture appears (`>= 15 l/d`).
 
 ## Resources
 
