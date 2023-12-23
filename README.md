@@ -6,3 +6,4 @@ We have a **Waveshare** e-ink display connected to an **ESP32**.
 
 We use it to display temperature and humidity values, as well as the time and upcoming calendar events.
 
+![APicture of Display](https://github.com/tobibot/hass-esp32-epaper/blob/main/assets/v_2023-11-27.jpg?raw=true)
