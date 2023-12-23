@@ -1,0 +1,423 @@
+esphome:
+  name: display
+  friendly_name: Display
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "left out for reasons" 
+
+ota:
+  password: "left out for reasons"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Display Fallback Hotspot"
+    password: "left out for reasons"
+
+captive_portal:
+    
+
+font:
+  - file: 'fonts/Google-Sans-Bold.ttf'
+    id: huge_font
+    size: 90
+    glyphs:
+      ['&', '@', '!', '?', ',', '.', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
+       '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
+       'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+       'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+       'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+       'u', 'v', 'w', 'x', 'y', 'z', 'ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', '/', '€', '’', 'ß', '²', '|'] 
+  - file: 'fonts/Google-Sans-Bold.ttf'
+    id: big_font
+    size: 40   
+    glyphs:
+      ['&', '@', '!', '?', ',', '.', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
+       '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
+       'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+       'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+       'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+       'u', 'v', 'w', 'x', 'y', 'z', 'ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', '/', '€', '’', 'ß', '²', '|'] 
+  - file: 'fonts/Google-Sans-Bold.ttf'
+    id: status_font
+    size: 18   
+    glyphs:
+      ['&', '@', '!', '?', ',', '.', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
+       '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
+       'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+       'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+       'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+       'u', 'v', 'w', 'x', 'y', 'z', 'ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', '/', '€', '’', 'ß', '²', '|'] 
+  - file: 'fonts/Google-Sans-Bold.ttf'
+    id: small_font
+    size: 12   
+    glyphs:
+      ['&', '@', '!', '?', ',', '.', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
+       '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
+       'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+       'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+       'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+       'u', 'v', 'w', 'x', 'y', 'z', 'ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', '/', '€', '’', 'ß', '²', '|'] 
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id: icon_font
+    size: 32
+    glyphs: [
+     '󰠦', #home-account
+     '󱁍', #home-circle-outline
+     '󱄶', #crosshairs-question
+     '󰦑', #office-building
+     '󰢒', #farm
+     '󰯙', #triforce / nussecke
+     '󱛮', # Hund - durchgetrichen     
+     '󰸊', #drop-empty
+     '󰖌', #drop-filled
+     '󱔂', #drop-water-alert
+     '󰔏', #thermometer
+     '󰖎' #humidity
+     ]
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id: weather_font
+    size: 128
+    glyphs: [
+      # Weather
+      "󰖔", # mdi-weather-clear-night
+      "󰖐", # mdi-weather-cloudy
+      "󰖑", # mdi-weather-fog
+      "󰼱", # mdi-weather-night-partly-cloudy
+      "󰖕", # mdi-weather-partly-cloudy 
+      "󰖖", # mdi-weather-pouring
+      "󰖗", # mdi-weather-rainy
+      "󰖘", # mdi-weather-snowy
+      "󰼶", # mdi-weather-snowy-heavy
+      "󰙿", # mdi-weather-snowy-rainy
+      "󰖙", # mdi-weather-sunny
+      "󰖞", # mdi-weather-windy-variant
+      "󰋖" # unknown      
+      ]
+
+image:
+  - file: "pictures/banner_sea_4.png"
+    id: banner_sea
+    resize: 244x202
+
+text_sensor:
+  - platform: homeassistant
+    id: owm_condition
+    entity_id: sensor.openweathermap_condition
+    internal: true
+  - platform: homeassistant
+    id: owm_forecast_condition
+    entity_id: sensor.openweathermap_forecast_condition
+    internal: true 
+  - platform: homeassistant
+    id: device_tracker_tobi
+    entity_id: device_tracker.dn2103
+    internal: true
+  - platform: homeassistant
+    id: device_tracker_beni
+    entity_id: device_tracker.beni_smartphone
+    internal: true   
+  - platform: homeassistant
+    id: next_event_text
+    entity_id: input_text.next_event_text
+    internal: true 
+  - platform: homeassistant
+    id: next_event_start
+    entity_id: input_text.next_event_start
+    internal: true     
+  - platform: homeassistant
+    id: next_event_start_dateonly
+    entity_id: input_text.next_event_start_dateonly
+    internal: true   
+  - platform: homeassistant
+    id: next_event_allday
+    entity_id: input_boolean.next_event_allday
+    internal: true   
+
+sensor:
+  - platform: homeassistant
+    id: owm_temp
+    entity_id: sensor.openweathermap_temperature
+    internal: true 
+  - platform: homeassistant
+    id: owm_hum
+    entity_id: sensor.openweathermap_humidity
+    internal: true    
+
+  # Temp/Hum/Rain Garten
+  - platform: homeassistant
+    id: temp_current_garden
+    entity_id: sensor.th_garten_ts0201_temperature
+    internal: true
+  - platform: homeassistant
+    id: hum_current_garden
+    entity_id: sensor.th_garten_ts0201_humidity
+    internal: true
+  - platform: homeassistant
+    id: rainfall_today
+    entity_id: sensor.rainfall_today
+    internal: true
+
+    # Temp/Hum Keller
+  - platform: homeassistant
+    id: hobby_temp
+    entity_id: sensor.th_sonoff_hobbykeller_temperature
+    internal: true   
+  - platform: homeassistant
+    id: hobby_hum
+    entity_id: sensor.th_sonoff_hobbykeller_humidity
+    internal: true   
+  - platform: homeassistant
+    id: wasch_temp
+    entity_id: sensor.th_keller_ts0201_temperature
+    internal: true   
+  - platform: homeassistant
+    id: wasch_hum
+    entity_id: sensor.th_keller_ts0201_humidity
+    internal: true   
+  - platform: homeassistant
+    id: vorrat_temp
+    entity_id: sensor.th_vorratskeller_ts0201_temperature
+    internal: true   
+  - platform: homeassistant
+    id: vorrat_hum
+    entity_id: sensor.th_vorratskeller_ts0201_humidity
+    internal: true   
+
+    # Temp/Hum EG
+  - platform: homeassistant
+    id: kueche_temp
+    entity_id: sensor.th_sonoffmini_kueche_temperature
+    internal: true   
+  - platform: homeassistant
+    id: kueche_hum
+    entity_id: sensor.th_sonoffmini_kueche_humidity
+    internal: true   
+  - platform: homeassistant
+    id: wohn_temp
+    entity_id: sensor.shellyth_temperature
+    internal: true   
+  - platform: homeassistant
+    id: wohn_hum
+    entity_id: sensor.shellyth_humidity
+    internal: true   
+
+    # Temp Hum OG
+  - platform: homeassistant
+    id: nathan_temp
+    entity_id: sensor.th_nathan_temperature
+    internal: true   
+  - platform: homeassistant
+    id: nathan_hum
+    entity_id: sensor.th_nathan_humidity
+    internal: true   
+  - platform: homeassistant
+    id: bad_temp
+    entity_id: sensor.tz3000_ywagc4rj_ts0201_temperature
+    internal: true   
+  - platform: homeassistant
+    id: bad_hum
+    entity_id: sensor.tz3000_ywagc4rj_ts0201_humidity
+    internal: true  
+  - platform: homeassistant
+    id: schlaf_temp
+    entity_id: sensor.th_schlaf_ts0201_temperature
+    internal: true   
+  - platform: homeassistant
+    id: schlaf_hum
+    entity_id: sensor.th_schlaf_ts0201_humidity
+    internal: true 
+
+# Temp DG
+  - platform: homeassistant
+    id: dachboden_temp1
+    entity_id: sensor.thermostat_dachboden_temperature_4
+    internal: true 
+
+
+    
+time:
+  - platform: homeassistant
+    id: hass_time
+
+spi:
+  clk_pin: 16
+  mosi_pin: 23
+  
+display:
+  - platform: waveshare_epaper
+    id: epaper
+    cs_pin: 5
+    busy_pin: 4
+    reset_pin: 21
+    dc_pin: 22
+    model: 7.50inV2
+    update_interval: 60s
+    reset_duration: 2ms
+    
+    lambda: |     
+   
+      // Wetter    
+      
+      // current condition
+      if (id(owm_condition).has_state()) {
+        if (id(owm_condition).state == "snowy-rainy") {
+          it.printf(70, 110, id(weather_font), TextAlign::BASELINE_CENTER , "󰙿");
+        } else if (id(owm_condition).state == "snowy-heavy") {
+          it.printf(70, 110, id(weather_font), TextAlign::BASELINE_CENTER , "󰼶");
+        } else if (id(owm_condition).state == "rainy") {
+          it.printf(70, 110, id(weather_font), TextAlign::BASELINE_CENTER , "󰖗");
+        } else if (id(owm_condition).state == "pouring") {
+          it.printf(70, 110, id(weather_font), TextAlign::BASELINE_CENTER , "󰖖");
+        } else if (id(owm_condition).state == "cloudy") {
+          it.printf(70, 110, id(weather_font), TextAlign::BASELINE_CENTER , "󰖐");
+        } else if (id(owm_condition).state == "partlycloudy") {
+          it.printf(70, 110, id(weather_font), TextAlign::BASELINE_CENTER , "󰖕");
+        } else if (id(owm_condition).state == "sunny") {
+          it.printf(70, 110, id(weather_font), TextAlign::BASELINE_CENTER , "󰖙");
+        } else if (id(owm_condition).state == "windyvariant") {
+          it.printf(70, 110, id(weather_font), TextAlign::BASELINE_CENTER , "󰖞");
+        } else if (id(owm_condition).state == "fog") {
+          it.printf(70, 110, id(weather_font), TextAlign::BASELINE_CENTER , "󰖑");
+        } else if (id(owm_condition).state == "nightpartlycloudy") {
+          it.printf(70, 110, id(weather_font), TextAlign::BASELINE_CENTER , "󰼱");
+        } else if (id(owm_condition).state == "snowy") {
+          it.printf(70, 110, id(weather_font), TextAlign::BASELINE_CENTER , "󰖘");
+        } else if (id(owm_condition).state == "clear-night") {
+          it.printf(70, 110, id(weather_font), TextAlign::BASELINE_CENTER , "󰖔");
+        } else {
+          it.printf(70, 110, id(weather_font), TextAlign::BASELINE_CENTER , "󰋖");
+        }
+      }
+
+      // Wetterdaten
+      it.print(150, 20, id(icon_font),TextAlign::CENTER_LEFT, "󰔏");
+      it.printf(190, 20, id(big_font),TextAlign::CENTER_LEFT, " %.1f °C", id(owm_temp).state);
+      
+      it.print(150, 60, id(icon_font),TextAlign::CENTER_LEFT, "󰖎");
+      it.printf(190, 60, id(status_font),TextAlign::CENTER_LEFT, " %.1f %%", id(owm_hum).state);
+
+      if (id(rainfall_today).state < 5.5) {
+        it.print(150, 90, id(icon_font),TextAlign::CENTER_LEFT, "󰸊");
+      } else if (id(rainfall_today).state < 15) {
+        it.print(150, 90, id(icon_font),TextAlign::CENTER_LEFT, "󰖌");          
+      } else {
+        it.print(150, 90, id(icon_font),TextAlign::CENTER_LEFT, "󱔂"); 
+      }
+
+      it.print(150, 90, id(icon_font),TextAlign::CENTER_LEFT, "󰸊");
+
+      if (id(rainfall_today).state < 0.3) {
+        it.print(190, 90, id(status_font),TextAlign::CENTER_LEFT, "-");
+      } else {
+        it.printf(190, 90, id(status_font),TextAlign::CENTER_LEFT, " %.1f mm/m²", id(rainfall_today).state);
+      }
+      
+
+      // UG
+      it.print(1, 200, id(status_font),TextAlign::CENTER_LEFT, "Hobbykeller:");
+      it.printf(140, 200, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(hobby_temp).state);
+      it.printf(210, 200, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(hobby_hum).state);
+      it.print(1, 230, id(status_font),TextAlign::CENTER_LEFT, "Waschkeller:");
+      it.printf(140, 230, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(wasch_temp).state);
+      it.printf(210, 230, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(wasch_hum).state);
+      it.print(1, 260, id(status_font),TextAlign::CENTER_LEFT, "Vorratskeller:");
+      it.printf(140, 260, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(vorrat_temp).state);
+      it.printf(210, 260, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(vorrat_hum).state);
+
+      // it.line(1, 280, 170, 280);
+
+      // EG
+      it.print(1, 300, id(status_font),TextAlign::CENTER_LEFT, "Wohnzimmer:");
+      it.printf(140, 300, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(wohn_temp).state);
+      it.printf(210, 300, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(wohn_hum).state);
+      it.print(1, 330, id(status_font),TextAlign::CENTER_LEFT, "Küche:");
+      it.printf(140, 330, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(kueche_temp).state);
+      it.printf(210, 330, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(kueche_hum).state);
+
+      // OG
+      it.print(1, 370, id(status_font),TextAlign::CENTER_LEFT, "Nathan:");
+      it.printf(140, 370, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(nathan_temp).state);
+      it.printf(210, 370, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(nathan_hum).state);
+      it.print(1, 400, id(status_font),TextAlign::CENTER_LEFT, "Bad:");
+      it.printf(140, 400, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(bad_temp).state);
+      it.printf(210, 400, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(bad_hum).state);
+      it.print(1, 430, id(status_font),TextAlign::CENTER_LEFT, "Schlafzimmer:");
+      it.printf(140, 430, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(schlaf_temp).state);
+      it.printf(210, 430, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(schlaf_hum).state);
+
+      it.print(1, 470, id(status_font),TextAlign::CENTER_LEFT, "Dachboden:");
+      it.printf(140, 470, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(dachboden_temp1).state);
+      // it.printf(210, 470, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(schlaf_hum).state);
+
+      //Time
+      it.strftime(500, 100, id(huge_font),TextAlign::BOTTOM_LEFT, "%H:%M", id(hass_time).now());
+      it.strftime(500, 110, id(status_font),TextAlign::BOTTOM_LEFT, "%A, %d.%m.%y, KW %W", id(hass_time).now());
+      it.line(500, 108, 830, 108);
+     
+      //Nächster Termin
+
+      if (id(next_event_allday).has_state() && strcmp(id(next_event_allday).state.c_str(), "on") == 0) {     
+          it.printf(500, 150, id(status_font),TextAlign::BOTTOM_LEFT,"%s", id(next_event_start_dateonly).state.c_str()); 
+          it.printf(560, 150, id(status_font),TextAlign::BOTTOM_LEFT,"%s", id(next_event_text).state.c_str());    
+      } else {
+          it.printf(500, 150, id(status_font),TextAlign::BOTTOM_LEFT,"%s", id(next_event_start).state.c_str()); 
+          it.printf(500, 180, id(status_font),TextAlign::BOTTOM_LEFT,"%s", id(next_event_text).state.c_str());    
+      }
+
+      //Tobias  // Todo: Office
+      it.print(500, 210, id(status_font),TextAlign::BOTTOM_LEFT,"Tobias");      
+      if(strcmp(id(device_tracker_tobi).state.c_str(), "home") == 0) {
+        it.print(500, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󰠦");
+      } else if(strcmp(id(device_tracker_tobi).state.c_str(), "not_home") == 0) {
+        it.print(500, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󱁍");
+      } else if(strcmp(id(device_tracker_tobi).state.c_str(), "Tobias_Arbeit") == 0) {
+        it.print(500, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󰦑");
+      } else if(strcmp(id(device_tracker_tobi).state.c_str(), "Macke_Anne") == 0) {
+        it.print(500, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󰢒");
+      } else if(strcmp(id(device_tracker_tobi).state.c_str(), "Ahaus") == 0) {
+        it.print(500, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󰯙");
+      } else if(strcmp(id(device_tracker_tobi).state.c_str(), "Ramona_Bene") == 0) {
+        it.print(500, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󱛮");
+      } else {
+        it.print(500, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󱄶");
+      }
+      it.printf(500, 260, id(status_font),TextAlign::BOTTOM_LEFT,"%s", id(device_tracker_tobi).state.c_str()); 
+
+      //Bernadeta
+      it.print(610, 210, id(status_font),TextAlign::BOTTOM_LEFT,"Bernadeta");      
+      if(strcmp(id(device_tracker_beni).state.c_str(), "home") == 0) {
+        it.print(610, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󰠦");
+      } else if(strcmp(id(device_tracker_beni).state.c_str(), "not_home") == 0) {
+        it.print(610, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󱁍");
+      } else if(strcmp(id(device_tracker_beni).state.c_str(), "Beni_Arbeit") == 0) {
+        it.print(610, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󰦑");
+      } else if(strcmp(id(device_tracker_beni).state.c_str(), "Macke_Anne") == 0) {
+        it.print(610, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󰢒");
+      } else if(strcmp(id(device_tracker_beni).state.c_str(), "Ahaus") == 0) {
+        it.print(610, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󰯙");
+      } else if(strcmp(id(device_tracker_beni).state.c_str(), "Ramona_Bene") == 0) {
+        it.print(610, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󱛮");
+      } else {
+        it.print(610, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󱄶");
+      }
+      it.printf(610, 260, id(status_font),TextAlign::BOTTOM_LEFT,"%s", id(device_tracker_beni).state.c_str());
+      
+      // Bild 
+      it.image(560, 260, id(banner_sea));
+
+      // Version
+      it.print(700, 460, id(status_font), "v22.19.57");
