@@ -1,0 +1,34 @@
+
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id: icon_font
+    size: 32
+    glyphs: [
+      # for advent caendar
+     '󰸗', # calendar
+     '󰐅', # tree
+     ]
+
+text_sensor:
+  # Adventskalender
+  - platform: homeassistant
+    id: heute_adventskalender
+    entity_id: input_text.HeuteAdventskalender
+    internal: true
+
+image:
+  - file: "pictures/banner_sea_4.png"
+    id: banner_sea
+    resize: 244x158
+
+
+# lambda-section
+    lambda: |   
+      // advent calendar, who's next? 
+      //it.print(450, 300, id(icon_font), TextAlign::BOTTOM_LEFT,"󰐅"); 
+      //it.print(490, 300, id(icon_font), TextAlign::BOTTOM_LEFT,"󰸗");  
+
+      //it.print(530, 300, id(status_font), TextAlign::BOTTOM_LEFT, id(heute_adventskalender).state.c_str()); 
+
+      // Bild 
+      it.image(560, 260, id(banner_sea));
+

@@ -3,6 +3,7 @@ esphome:
   friendly_name: Display
 
 esp32:
+  # board: lolin_d32
   board: esp32dev
   framework:
     type: arduino
@@ -13,7 +14,7 @@ logger:
 # Enable Home Assistant API
 api:
   encryption:
-    key: "left out for reasons" 
+    key: "left out for reasons"
 
 ota:
   password: "left out for reasons"
@@ -35,12 +36,7 @@ font:
     id: huge_font
     size: 90
     glyphs:
-      ['&', '@', '!', '?', ',', '.', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
-       '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
-       'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-       'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
-       'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-       'u', 'v', 'w', 'x', 'y', 'z', 'ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', '/', '€', '’', 'ß', '²', '|'] 
+      [':', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ] 
   - file: 'fonts/Google-Sans-Bold.ttf'
     id: big_font
     size: 40   
@@ -55,22 +51,21 @@ font:
     id: status_font
     size: 18   
     glyphs:
-      ['&', '@', '!', '?', ',', '.', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
+      ['&', '@', '!', '?', ',', '.', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0','ł',
        '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
        'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
        'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
        'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-       'u', 'v', 'w', 'x', 'y', 'z', 'ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', '/', '€', '’', 'ß', '²', '|'] 
-  - file: 'fonts/Google-Sans-Bold.ttf'
-    id: small_font
-    size: 12   
-    glyphs:
-      ['&', '@', '!', '?', ',', '.', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
-       '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
-       'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-       'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
-       'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-       'u', 'v', 'w', 'x', 'y', 'z', 'ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', '/', '€', '’', 'ß', '²', '|'] 
+       'u', 'v', 'w', 'x', 'y', 'z', 'ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', '/', '€', '’', 'ß', '²', '|']  
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id: small_icon_font
+    size: 24
+    glyphs: [
+     '󱇛', #window-closed
+     '󱇜', #window-open
+     '󰋖' # unknown
+     ]
+
   - file: 'fonts/materialdesignicons-webfont.ttf'
     id: icon_font
     size: 32
@@ -84,9 +79,12 @@ font:
      '󱛮', # Hund - durchgetrichen     
      '󰸊', #drop-empty
      '󰖌', #drop-filled
-     '󱔂', #drop-water-alert
+     '󰻺', #flood
+     '󱕬', #submarine
      '󰔏', #thermometer
-     '󰖎' #humidity
+     '󰖎', #humidity
+     # '󰸗', # calendar
+     # '󰐅', # tree
      ]
   - file: 'fonts/materialdesignicons-webfont.ttf'
     id: weather_font
@@ -108,11 +106,6 @@ font:
       "󰋖" # unknown      
       ]
 
-image:
-  - file: "pictures/banner_sea_4.png"
-    id: banner_sea
-    resize: 244x202
-
 text_sensor:
   - platform: homeassistant
     id: owm_condition
@@ -125,6 +118,10 @@ text_sensor:
   - platform: homeassistant
     id: device_tracker_tobi
     entity_id: device_tracker.dn2103
+    internal: true
+  - platform: homeassistant
+    id: device_tracker_nathan
+    entity_id: device_tracker.nathan_tablet
     internal: true
   - platform: homeassistant
     id: device_tracker_beni
@@ -145,7 +142,16 @@ text_sensor:
   - platform: homeassistant
     id: next_event_allday
     entity_id: input_boolean.next_event_allday
-    internal: true   
+    internal: true
+  # Fenster Dachboden
+  - platform: homeassistant
+    id: fenstersensor_db_hinten
+    entity_id: binary_sensor.fenstersensor_db_hinten_offnet
+    internal: true
+  - platform: homeassistant
+    id: fenstersensor_db_vorne
+    entity_id: binary_sensor.fenstersensor_db_vorne_offnet
+    internal: true
 
 sensor:
   - platform: homeassistant
@@ -259,12 +265,12 @@ spi:
   
 display:
   - platform: waveshare_epaper
-    id: epaper
+    id: epaper75_01
     cs_pin: 5
     busy_pin: 4
     reset_pin: 21
     dc_pin: 22
-    model: 7.50inV2
+    model: 7.50inV2alt
     update_interval: 60s
     reset_duration: 2ms
     
@@ -310,21 +316,23 @@ display:
       it.print(150, 60, id(icon_font),TextAlign::CENTER_LEFT, "󰖎");
       it.printf(190, 60, id(status_font),TextAlign::CENTER_LEFT, " %.1f %%", id(owm_hum).state);
 
-      if (id(rainfall_today).state < 5.5) {
+      if (id(rainfall_today).state <= 5.5) {
         it.print(150, 90, id(icon_font),TextAlign::CENTER_LEFT, "󰸊");
-      } else if (id(rainfall_today).state < 15) {
+      } else if (id(rainfall_today).state > 5.5 && id(rainfall_today).state < 15.0) {
         it.print(150, 90, id(icon_font),TextAlign::CENTER_LEFT, "󰖌");          
-      } else {
-        it.print(150, 90, id(icon_font),TextAlign::CENTER_LEFT, "󱔂"); 
+      } else if (id(rainfall_today).state >= 15.0) {
+        it.print(150, 90, id(icon_font),TextAlign::CENTER_LEFT, "󰻺"); 
       }
 
-      it.print(150, 90, id(icon_font),TextAlign::CENTER_LEFT, "󰸊");
 
       if (id(rainfall_today).state < 0.3) {
         it.print(190, 90, id(status_font),TextAlign::CENTER_LEFT, "-");
       } else {
         it.printf(190, 90, id(status_font),TextAlign::CENTER_LEFT, " %.1f mm/m²", id(rainfall_today).state);
       }
+      
+      // Test icon
+      // it.print(190, 120, id(icon_font),TextAlign::CENTER_LEFT, "󱕬");
       
 
       // UG
@@ -359,65 +367,101 @@ display:
       it.printf(140, 430, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(schlaf_temp).state);
       it.printf(210, 430, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(schlaf_hum).state);
 
+      //DG
       it.print(1, 470, id(status_font),TextAlign::CENTER_LEFT, "Dachboden:");
       it.printf(140, 470, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(dachboden_temp1).state);
-      // it.printf(210, 470, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(schlaf_hum).state);
+      if (strcmp(id(fenstersensor_db_vorne).state.c_str(), "on") == 0) {     
+          it.print(210, 470, id(small_icon_font),TextAlign::CENTER_LEFT, "󱇜");
+      } else  if (strcmp(id(fenstersensor_db_vorne).state.c_str(), "off") == 0){
+          it.print(210, 470, id(small_icon_font),TextAlign::CENTER_LEFT, "󱇛");
+      } else {
+          it.print(210, 470, id(small_icon_font),TextAlign::CENTER_LEFT, "󰋖");
+      }
+
+       if (strcmp(id(fenstersensor_db_hinten).state.c_str(), "on") == 0) {     
+          it.print(235, 470, id(small_icon_font),TextAlign::CENTER_LEFT, "󱇜");
+      } else  if (strcmp(id(fenstersensor_db_hinten).state.c_str(), "off") == 0){
+          it.print(235, 470, id(small_icon_font),TextAlign::CENTER_LEFT, "󱇛");
+      } else {
+          it.print(235, 470, id(small_icon_font),TextAlign::CENTER_LEFT, "󰋖");
+      }
+      // it.printf(230, 470, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(schlaf_hum).state);
 
       //Time
-      it.strftime(500, 100, id(huge_font),TextAlign::BOTTOM_LEFT, "%H:%M", id(hass_time).now());
-      it.strftime(500, 110, id(status_font),TextAlign::BOTTOM_LEFT, "%A, %d.%m.%y, KW %W", id(hass_time).now());
-      it.line(500, 108, 830, 108);
+      it.strftime(450, 100, id(huge_font),TextAlign::BOTTOM_LEFT, "%H:%M", id(hass_time).now());
+      it.strftime(450, 110, id(status_font),TextAlign::BOTTOM_LEFT, "%A, %d.%m.%y, KW %W", id(hass_time).now());
+      it.line(450, 108, 830, 108);
      
       //Nächster Termin
-
       if (id(next_event_allday).has_state() && strcmp(id(next_event_allday).state.c_str(), "on") == 0) {     
-          it.printf(500, 150, id(status_font),TextAlign::BOTTOM_LEFT,"%s", id(next_event_start_dateonly).state.c_str()); 
-          it.printf(560, 150, id(status_font),TextAlign::BOTTOM_LEFT,"%s", id(next_event_text).state.c_str());    
+          it.printf(450, 150, id(status_font),TextAlign::BOTTOM_LEFT,"%s", id(next_event_start_dateonly).state.c_str());               
       } else {
-          it.printf(500, 150, id(status_font),TextAlign::BOTTOM_LEFT,"%s", id(next_event_start).state.c_str()); 
-          it.printf(500, 180, id(status_font),TextAlign::BOTTOM_LEFT,"%s", id(next_event_text).state.c_str());    
+          it.printf(450, 150, id(status_font),TextAlign::BOTTOM_LEFT,"%s", id(next_event_start).state.c_str());             
       }
+      it.printf(450, 180, id(status_font),TextAlign::BOTTOM_LEFT,"%s", id(next_event_text).state.c_str());  
 
-      //Tobias  // Todo: Office
-      it.print(500, 210, id(status_font),TextAlign::BOTTOM_LEFT,"Tobias");      
-      if(strcmp(id(device_tracker_tobi).state.c_str(), "home") == 0) {
-        it.print(500, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󰠦");
-      } else if(strcmp(id(device_tracker_tobi).state.c_str(), "not_home") == 0) {
-        it.print(500, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󱁍");
-      } else if(strcmp(id(device_tracker_tobi).state.c_str(), "Tobias_Arbeit") == 0) {
-        it.print(500, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󰦑");
-      } else if(strcmp(id(device_tracker_tobi).state.c_str(), "Macke_Anne") == 0) {
-        it.print(500, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󰢒");
-      } else if(strcmp(id(device_tracker_tobi).state.c_str(), "Ahaus") == 0) {
-        it.print(500, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󰯙");
-      } else if(strcmp(id(device_tracker_tobi).state.c_str(), "Ramona_Bene") == 0) {
-        it.print(500, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󱛮");
+      //Nathan
+      it.print(450, 220, id(status_font),TextAlign::BOTTOM_LEFT,"Nathan");      
+      if(strcmp(id(device_tracker_nathan).state.c_str(), "home") == 0) {
+        it.print(450, 250, id(icon_font), TextAlign::BOTTOM_LEFT, "󰠦");
+      } else if(strcmp(id(device_tracker_nathan).state.c_str(), "not_home") == 0) {
+        it.print(450, 250, id(icon_font), TextAlign::BOTTOM_LEFT, "󱁍");
+      } else if(strcmp(id(device_tracker_nathan).state.c_str(), "Tobias_Arbeit") == 0) {
+        it.print(450, 250, id(icon_font), TextAlign::BOTTOM_LEFT, "󰦑");
+      } else if(strcmp(id(device_tracker_nathan).state.c_str(), "Macke_Anne") == 0) {
+        it.print(450, 250, id(icon_font), TextAlign::BOTTOM_LEFT, "󰢒");
+      } else if(strcmp(id(device_tracker_nathan).state.c_str(), "Ahaus") == 0) {
+        it.print(450, 250, id(icon_font), TextAlign::BOTTOM_LEFT, "󰯙");
+      } else if(strcmp(id(device_tracker_nathan).state.c_str(), "Ramona_Bene") == 0) {
+        it.print(450, 250, id(icon_font), TextAlign::BOTTOM_LEFT, "󱛮");
       } else {
-        it.print(500, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󱄶");
+        it.print(450, 250, id(icon_font), TextAlign::BOTTOM_LEFT, "󱄶");
       }
-      it.printf(500, 260, id(status_font),TextAlign::BOTTOM_LEFT,"%s", id(device_tracker_tobi).state.c_str()); 
 
       //Bernadeta
-      it.print(610, 210, id(status_font),TextAlign::BOTTOM_LEFT,"Bernadeta");      
+      it.print(540, 220, id(status_font),TextAlign::BOTTOM_LEFT,"Beni");      
       if(strcmp(id(device_tracker_beni).state.c_str(), "home") == 0) {
-        it.print(610, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󰠦");
+        it.print(540, 250, id(icon_font), TextAlign::BOTTOM_LEFT, "󰠦");
       } else if(strcmp(id(device_tracker_beni).state.c_str(), "not_home") == 0) {
-        it.print(610, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󱁍");
+        it.print(540, 250, id(icon_font), TextAlign::BOTTOM_LEFT, "󱁍");
       } else if(strcmp(id(device_tracker_beni).state.c_str(), "Beni_Arbeit") == 0) {
-        it.print(610, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󰦑");
+        it.print(540, 250, id(icon_font), TextAlign::BOTTOM_LEFT, "󰦑");
       } else if(strcmp(id(device_tracker_beni).state.c_str(), "Macke_Anne") == 0) {
-        it.print(610, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󰢒");
+        it.print(540, 250, id(icon_font), TextAlign::BOTTOM_LEFT, "󰢒");
       } else if(strcmp(id(device_tracker_beni).state.c_str(), "Ahaus") == 0) {
-        it.print(610, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󰯙");
+        it.print(540, 250, id(icon_font), TextAlign::BOTTOM_LEFT, "󰯙");
       } else if(strcmp(id(device_tracker_beni).state.c_str(), "Ramona_Bene") == 0) {
-        it.print(610, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󱛮");
+        it.print(540, 250, id(icon_font), TextAlign::BOTTOM_LEFT, "󱛮");
       } else {
-        it.print(610, 240, id(icon_font), TextAlign::BOTTOM_LEFT, "󱄶");
+        it.print(540, 250, id(icon_font), TextAlign::BOTTOM_LEFT, "󱄶");
       }
-      it.printf(610, 260, id(status_font),TextAlign::BOTTOM_LEFT,"%s", id(device_tracker_beni).state.c_str());
-      
+
+      //Tobi
+      it.print(630, 220, id(status_font),TextAlign::BOTTOM_LEFT,"Tobi");      
+      if(strcmp(id(device_tracker_tobi).state.c_str(), "home") == 0) {
+        it.print(630, 250, id(icon_font), TextAlign::BOTTOM_LEFT, "󰠦");
+      } else if(strcmp(id(device_tracker_tobi).state.c_str(), "not_home") == 0) {
+        it.print(630, 250, id(icon_font), TextAlign::BOTTOM_LEFT, "󱁍");
+      } else if(strcmp(id(device_tracker_tobi).state.c_str(), "Beni_Arbeit") == 0) {
+        it.print(630, 250, id(icon_font), TextAlign::BOTTOM_LEFT, "󰦑");
+      } else if(strcmp(id(device_tracker_tobi).state.c_str(), "Macke_Anne") == 0) {
+        it.print(630, 250, id(icon_font), TextAlign::BOTTOM_LEFT, "󰢒");
+      } else if(strcmp(id(device_tracker_tobi).state.c_str(), "Ahaus") == 0) {
+        it.print(630, 250, id(icon_font), TextAlign::BOTTOM_LEFT, "󰯙");
+      } else if(strcmp(id(device_tracker_tobi).state.c_str(), "Ramona_Bene") == 0) {
+        it.print(630, 250, id(icon_font), TextAlign::BOTTOM_LEFT, "󱛮");
+      } else {
+        it.print(630, 250, id(icon_font), TextAlign::BOTTOM_LEFT, "󱄶");
+      }
+
+      // Adventskalender 
+      //it.print(450, 300, id(icon_font), TextAlign::BOTTOM_LEFT,"󰐅"); 
+      //it.print(490, 300, id(icon_font), TextAlign::BOTTOM_LEFT,"󰸗");  
+
+      //it.print(530, 300, id(status_font), TextAlign::BOTTOM_LEFT, id(heute_adventskalender).state.c_str()); 
+
       // Bild 
-      it.image(560, 260, id(banner_sea));
+      //it.image(510, 300, id(banner_sea));
 
       // Version
-      it.print(700, 460, id(status_font), "v22.19.57");
+      it.print(650, 460, id(status_font), "v03.22.51");
