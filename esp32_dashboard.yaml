@@ -106,6 +106,21 @@ font:
       "󰋖" # unknown      
       ]
 
+globals:
+  - id: align_c1_text
+    type: int
+    restore_value: no
+    initial_value: '1'  
+  - id: align_c1_t
+    type: int
+    restore_value: no
+    initial_value: '140'
+  - id: align_c1_h
+    type: int
+    restore_value: no
+    initial_value: '210'
+
+
 text_sensor:
   - platform: homeassistant
     id: owm_condition
@@ -336,49 +351,49 @@ display:
       
 
       // UG
-      it.print(1, 200, id(status_font),TextAlign::CENTER_LEFT, "Hobbykeller:");
-      it.printf(140, 200, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(hobby_temp).state);
-      it.printf(210, 200, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(hobby_hum).state);
-      it.print(1, 230, id(status_font),TextAlign::CENTER_LEFT, "Waschkeller:");
-      it.printf(140, 230, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(wasch_temp).state);
-      it.printf(210, 230, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(wasch_hum).state);
-      it.print(1, 260, id(status_font),TextAlign::CENTER_LEFT, "Vorratskeller:");
-      it.printf(140, 260, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(vorrat_temp).state);
-      it.printf(210, 260, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(vorrat_hum).state);
+      it.print(id(align_c1_text), 200, id(status_font),TextAlign::CENTER_LEFT, "Hobbykeller:");
+      it.printf(id(align_c1_t), 200, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(hobby_temp).state);
+      it.printf(id(align_c1_h), 200, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(hobby_hum).state);
+      it.print(id(align_c1_text), 230, id(status_font),TextAlign::CENTER_LEFT, "Waschkeller:");
+      it.printf(id(align_c1_t), 230, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(wasch_temp).state);
+      it.printf(id(align_c1_h), 230, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(wasch_hum).state);
+      it.print(id(align_c1_text), 260, id(status_font),TextAlign::CENTER_LEFT, "Vorratskeller:");
+      it.printf(id(align_c1_t), 260, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(vorrat_temp).state);
+      it.printf(id(align_c1_h), 260, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(vorrat_hum).state);
 
       // it.line(1, 280, 170, 280);
 
       // EG
-      it.print(1, 300, id(status_font),TextAlign::CENTER_LEFT, "Wohnzimmer:");
-      it.printf(140, 300, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(wohn_temp).state);
-      it.printf(210, 300, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(wohn_hum).state);
-      it.print(1, 330, id(status_font),TextAlign::CENTER_LEFT, "Küche:");
-      it.printf(140, 330, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(kueche_temp).state);
-      it.printf(210, 330, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(kueche_hum).state);
+      it.print(id(align_c1_text), 300, id(status_font),TextAlign::CENTER_LEFT, "Wohnzimmer:");
+      it.printf(id(align_c1_t), 300, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(wohn_temp).state);
+      it.printf(id(align_c1_h), 300, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(wohn_hum).state);
+      it.print(id(align_c1_text), 330, id(status_font),TextAlign::CENTER_LEFT, "Küche:");
+      it.printf(id(align_c1_t), 330, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(kueche_temp).state);
+      it.printf(id(align_c1_h), 330, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(kueche_hum).state);
 
       // OG
-      it.print(1, 370, id(status_font),TextAlign::CENTER_LEFT, "Nathan:");
-      it.printf(140, 370, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(nathan_temp).state);
-      it.printf(210, 370, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(nathan_hum).state);
-      it.print(1, 400, id(status_font),TextAlign::CENTER_LEFT, "Bad:");
-      it.printf(140, 400, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(bad_temp).state);
-      it.printf(210, 400, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(bad_hum).state);
-      it.print(1, 430, id(status_font),TextAlign::CENTER_LEFT, "Schlafzimmer:");
-      it.printf(140, 430, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(schlaf_temp).state);
-      it.printf(210, 430, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(schlaf_hum).state);
+      it.print(id(align_c1_text), 370, id(status_font),TextAlign::CENTER_LEFT, "Nathan:");
+      it.printf(id(align_c1_t), 370, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(nathan_temp).state);
+      it.printf(id(align_c1_h), 370, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(nathan_hum).state);
+      it.print(id(align_c1_text), 400, id(status_font),TextAlign::CENTER_LEFT, "Bad:");
+      it.printf(id(align_c1_t), 400, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(bad_temp).state);
+      it.printf(id(align_c1_h), 400, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(bad_hum).state);
+      it.print(id(align_c1_text), 430, id(status_font),TextAlign::CENTER_LEFT, "Schlafzimmer:");
+      it.printf(id(align_c1_t), 430, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(schlaf_temp).state);
+      it.printf(id(align_c1_h), 430, id(status_font),TextAlign::CENTER_LEFT, "%.1f %%", id(schlaf_hum).state);
 
       //DG
-      it.print(1, 470, id(status_font),TextAlign::CENTER_LEFT, "Dachboden:");
-      it.printf(140, 470, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(dachboden_temp1).state);
+      it.print(id(align_c1_text), 470, id(status_font),TextAlign::CENTER_LEFT, "Dachboden:");
+      it.printf(id(align_c1_t), 470, id(status_font),TextAlign::CENTER_LEFT, "%.1f °C", id(dachboden_temp1).state);
       if (strcmp(id(fenstersensor_db_vorne).state.c_str(), "on") == 0) {     
-          it.print(210, 470, id(small_icon_font),TextAlign::CENTER_LEFT, "󱇜");
+          it.print(id(align_c1_h), 470, id(small_icon_font),TextAlign::CENTER_LEFT, "󱇜");
       } else  if (strcmp(id(fenstersensor_db_vorne).state.c_str(), "off") == 0){
-          it.print(210, 470, id(small_icon_font),TextAlign::CENTER_LEFT, "󱇛");
+          it.print(id(align_c1_h), 470, id(small_icon_font),TextAlign::CENTER_LEFT, "󱇛");
       } else {
-          it.print(210, 470, id(small_icon_font),TextAlign::CENTER_LEFT, "󰋖");
+          it.print(id(align_c1_h), 470, id(small_icon_font),TextAlign::CENTER_LEFT, "󰋖");
       }
 
-       if (strcmp(id(fenstersensor_db_hinten).state.c_str(), "on") == 0) {     
+      if (strcmp(id(fenstersensor_db_hinten).state.c_str(), "on") == 0) {     
           it.print(235, 470, id(small_icon_font),TextAlign::CENTER_LEFT, "󱇜");
       } else  if (strcmp(id(fenstersensor_db_hinten).state.c_str(), "off") == 0){
           it.print(235, 470, id(small_icon_font),TextAlign::CENTER_LEFT, "󱇛");
