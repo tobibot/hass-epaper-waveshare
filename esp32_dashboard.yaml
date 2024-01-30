@@ -273,12 +273,12 @@ sensor:
     entity_id: sensor.thermostat_dachboden_temperature_4
     internal: true 
   
-  # hour of now
+  # day of now
   - platform: template
-    name: "Current Hour"
-    id: current_hour
+    name: "Current Day"
+    id: current_day
     lambda: |-
-      return id(hass_time).now().hour;
+      return id(hass_time).now().day_of_month;
 
     
 time:
@@ -291,10 +291,10 @@ spi:
   
 binary_sensor:
   - platform: template
-    name: "Hour is greater than 6"
-    id: hour_greater_than_6
+    name: "Hour is greater than 5"
+    id: hour_greater_than_5
     lambda: |-
-      return id(hass_time).now().hour > 6 ? true : false;
+      return id(hass_time).now().hour > 5 ? true : false;
 
 display:
   - platform: waveshare_epaper
@@ -309,7 +309,7 @@ display:
     
     lambda: |  
 
-      if (id(hour_greater_than_6).state) // we sleep at night
+      if (id(hour_greater_than_5).state) // we sleep at night
       {
         // Wetter  
         // current condition
@@ -495,14 +495,12 @@ display:
           it.print(tobiLeft, positionValueTop, id(icon_font), TextAlign::BOTTOM_LEFT, "󱄶");
         }
 
-
         // Nathans Tagesvorschau
 
         int iconLeft = 540;
         int iconTop = 480;
 
-
-        if (id(current_hour).state == std::stoi(id(next_event_start).state.substr(0, 2))) {
+        if (id(current_day).state == std::stoi(id(next_event_start).state.substr(0, 2))) {
           if (id(next_event_text).state.find("Schwimm") != std::string::npos) {
             it.print(iconLeft, iconTop, id(huge_icon_font), TextAlign::BOTTOM_LEFT, "󰓣"); // swim
           } else if (id(next_event_text).state.find("Musikschule") != std::string::npos) {
@@ -517,5 +515,5 @@ display:
         // Version
         it.print(650, 460, id(status_font), "v29.21.42");
       } else {
-        it.print(650, 460, id(status_font), "sleeping until 6 o'clock");
+        it.print(650, 460, id(status_font), "sleeping until 6");
       }
